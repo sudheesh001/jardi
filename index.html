@@ -1,0 +1,162 @@
+<html>
+<head>
+	<title>Jardinains!
+	</title>
+	<script type="text/javascript">
+		var ctx;
+		var score=0;
+		var boxx=250; var boxy=50;
+		var ballrad=12;
+		var boxheight=500; var boxwidth=ballrad;
+		var gamewidth=450; var barwidth=150;
+		var bar1=boxx+0*ballrad; var bar2=boxx-4*ballrad+boxheight-barwidth+ballrad;
+		var ballx=140; var bally=100;
+		var ballvx=10; var ballvy=10;
+		var barleft=350; 
+		var barright=barleft+barwidth;
+		var left=boxx+2*ballrad;
+		var right=boxx+boxheight-5*ballrad;
+		var up=boxy+2*ballrad;
+		var down=boxy+boxheight;
+		var timer=0;
+		var movement=20;
+		var i=0;
+		function init()
+		{
+			window.addEventListener('keydown',change,false);
+			ctx=document.getElementById("canvas").getContext('2d');
+  			createboundary();
+			moveBall();
+			setInterval(moveBall,100);
+		}
+		function createboundary()
+		{
+			ctx.beginPath();
+			ctx.fillStyle="BLACK";
+			ctx.fillRect(boxx,boxy,boxwidth,boxheight);
+			ctx.fillRect(boxx+gamewidth,boxy,boxwidth,boxheight);
+			ctx.fillRect(boxx+ballrad,boxy,boxheight-5*ballrad,boxwidth);
+			ctx.closePath();
+			ctx.fill();
+			ctx.beginPath();
+			ctx.fillStyle="RED";
+			ctx.fillRect(boxx+ballrad,boxy+boxheight,boxheight-5*ballrad,boxwidth);
+			ctx.closePath();
+		}
+		function moveBall()
+		{
+			timer=(timer+1)%7;
+			if(timer==0)
+			{
+				if(ballvx<0)
+				{
+					ballvx-=0.5;
+				}
+				else
+				{
+					ballvx+=0.5;
+				}
+				if(ballvy<0)
+				{
+					ballvy-=0.4;
+				}
+				else
+				{
+					ballvy+=0.4;
+				}
+			}
+			ctx.clearRect(boxx+ballrad,boxy+ballrad,boxheight-5.2*ballrad,boxheight-ballrad);
+			ctx.clearRect(0,0,250,500);
+			ctx.fillStyle    = '#00F';
+		    ctx.font         = 'Italic 30px Sans-Serif';
+    		ctx.strokeText("Score: ",10,25);
+    		ctx.strokeText(score, 150, 25);
+			ctx.fillStyle="TAN";
+			ctx.fillRect(boxx+ballrad,boxy+ballrad,boxheight-5*ballrad,boxheight-ballrad);
+			moveandchange();
+			ctx.beginPath();
+			ctx.fillStyle="RED";
+			ctx.arc(ballx,bally,ballrad,0,2*Math.PI,true);
+			ctx.closePath();
+			ctx.fill();
+			ctx.beginPath();
+			ctx.fillStyle="BLUE";
+			ctx.fillRect(barleft,boxy+boxheight-ballrad,barwidth,boxwidth);
+			ctx.closePath();
+			ctx.fill();
+		}
+		function moveandchange()
+		{
+			score++;
+			ballx+=ballvx;
+			bally+=ballvy;
+			if(ballx >= right)
+			{
+				ballx=right;
+				ballvx=-ballvx;
+			}	
+			if(ballx <= left)
+			{
+				ballx=left;
+				ballvx=-ballvx;
+			}
+			if(bally <= up)
+			{
+				bally=up;
+				ballvy=-ballvy;
+			}
+			if(bally+ballrad >= down)
+			{
+				if(barleft>=ballx || barright<=ballx)
+				{
+					if(i==0) 
+					{
+						alert("Game over. Your score is " + score+ ". Reload to play again");
+						i++;
+					}
+					else alert("Reload to play");
+				}
+				else
+				{
+					bally=down-2*ballrad;
+					ballvy=-ballvy;
+				}
+			}
+		}
+		function change(event)
+		{
+			var keyCode;
+			if(event==null)
+			{
+				keyCode=window.event.keyCode;
+				window.event.preventDefault();
+			}
+			else
+			{
+				keyCode=event.keyCode;
+				event.preventDefault();
+			}
+			switch(keyCode)
+			{
+				case 37: if(barleft-movement>bar1)
+						{
+							barleft-=movement;
+							barright=barleft+barwidth;
+						}
+						break;
+				case 39: if(barleft+movement<bar2)
+						{
+							barleft+=movement;
+							barright=barleft+barwidth;
+						}
+						break;
+			}
+		}
+	</script>
+</head>
+<body onLoad="init();">
+	<h3><i>Use Left and Right arrow keys to move the Bar.</i></h3>
+	<canvas id='canvas' width=1000 height=800>
+	</canvas>
+</body>
+</html>
