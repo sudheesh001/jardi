@@ -5,19 +5,32 @@
 	<script type="text/javascript">
 		var ctx;
 		var score=0;
-		var boxx=250; var boxy=50;
+
+		var boxx=250; 
+		var boxy=50;
 		var ballrad=12;
-		var boxheight=500; var boxwidth=ballrad;
+
+		var boxheight=500; 
+		var boxwidth=ballrad;
+
 		var gamewidth=450; var barwidth=150;
-		var bar1=boxx+0*ballrad; var bar2=boxx-4*ballrad+boxheight-barwidth+ballrad;
-		var ballx=140; var bally=100;
-		var ballvx=10; var ballvy=10;
+		var bar1=boxx+0*ballrad; 
+		var bar2=boxx-4*ballrad+boxheight-barwidth+ballrad;
+
+		var ballx=140; 
+		var bally=100;
+
+		var ballvx=10; 
+		var ballvy=10;
+
 		var barleft=350; 
 		var barright=barleft+barwidth;
+
 		var left=boxx+2*ballrad;
 		var right=boxx+boxheight-5*ballrad;
 		var up=boxy+2*ballrad;
 		var down=boxy+boxheight;
+
 		var timer=0;
 		var movement=20;
 		var i=0;
@@ -112,6 +125,9 @@
 					if(i==0) 
 					{
 						alert("Game over. Your score is " + score+ ". Reload to play again");
+						// I suggest you remove alert and instead go with a clear function this way
+						// getElementById("content").innerHTML = ""; 
+						// reinvoke the canvas and related init functions
 						i++;
 					}
 					else alert("Reload to play");
@@ -152,11 +168,23 @@
 						break;
 			}
 		}
+		window.onload = window.onresize = function() {
+			var canvas = document.getElementById('canvas');
+			var viewportWidth = window.innerWidth;
+			var viewportHeight = window.innerHeight;
+			var canvasWidth = viewportWidth * 0.8;
+			var canvasHeight = canvasWidth / 2;
+			canvas.style.position = "absolute";
+			canvas.setAttribute("width", canvasWidth);
+			canvas.setAttribute("height", canvasHeight);
+			canvas.style.top = (viewportHeight - canvasHeight) / 2 + "px";
+			canvas.style.left = (viewportWidth - canvasWidth) / 2 + "px";
+		}
 	</script>
 </head>
-<body onLoad="init();">
-	<h3><i>Use Left and Right arrow keys to move the Bar.</i></h3>
-	<canvas id='canvas' width=1000 height=800>
+<body onLoad="init();" style="background-color:whitesmoke">
+	<h3 style="color:black; text-align:center">Use Left and Right arrow keys to move the Bar.</h3>
+	<canvas id='canvas' width=1000 height=800 style="padding-left: 0;padding-right: 0; margin-left: auto; margin-right: auto; display: block;">
 	</canvas>
 </body>
 </html>
